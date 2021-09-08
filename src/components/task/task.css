@@ -1,5 +1,5 @@
 .task {
-    display: flex;
+    display: flex; 
     align-items: center;
     justify-content: space-between;
 }
@@ -7,6 +7,7 @@
 .task_paragraph {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .task_icon {
@@ -18,6 +19,23 @@
     color: #fff;
 }
 
+.tasks_info {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.task_name, .about_task {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid transparent;
+} 
+
+.task_name:focus, .about_task:focus {
+    color: gray;
+}
+
 .task_buttons {
     display: flex;
     align-items: center;
@@ -27,28 +45,42 @@
 
 .task_icon_buttons {
     font-size: 28px;
-    margin-right: 20px;
     cursor: pointer;
     transition: .3s all ease-in;
+    color: #fff;
 }
 
-.task_icon_buttons:hover{
-    transform: scale(1.3);
-}
-.fa-trash {
-    color: red;
-}
-
-.fa-pen-square {
-    color: blue;
-}
-
-.fa-save {
-    color: green;
-}
-
-.paragraph {
+.task_name {
     color: #12395d;
     font-weight: bold;
 }
 
+.about_task {
+    font-size: 14px;
+}
+
+.task_buttons > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 3px solid transparent;
+    padding: 5px;
+    transition: .3s all ease-in;
+}
+
+.trash_button {
+    background-color: red;
+}
+
+.edit_button {
+    background-color: #2D46B9;
+}
+
+.save_button {
+    background-color: #57CC99;
+}
+
+.task_buttons > button:hover {
+    border: 3px solid #fff;
+}
