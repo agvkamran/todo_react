@@ -5,12 +5,11 @@ import Task from './components/task/task';
 import Footer from './components/footer/footer';
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       taskName: '',
       aboutTask: '',
-      id: 0,
       tasks: []
     };
   }
@@ -29,19 +28,21 @@ class App extends React.Component {
     })
   }
 
+  id = 0;
+  
   addTask = () => {
     let textObject = {
-      id: this.state.id++,
+      id: this.id++,
       taskName: this.state.taskName,
       aboutTask: this.state.aboutTask
     };
 
     if (textObject.taskName.length !== 0 && textObject.aboutTask.length !== 0) {
       this.setState({
-        tasks: [...this.state.tasks, textObject]
+        tasks: [...this.state.tasks, textObject], 
+        taskName: '',
+        aboutTask: ''
       });
-      this.state.taskName = '';
-      this.state.aboutTask = '';
     }
   }
 
