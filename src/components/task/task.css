@@ -57,6 +57,7 @@
 
 .about_task {
     font-size: 14px;
+    color: grey;
 }
 
 .task_buttons > button {
