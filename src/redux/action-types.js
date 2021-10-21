@@ -1,0 +1,4 @@
+export const types = {
+    SET_TASKNAME: 'SET_TASKNAME',
+    SET_ABOUTTASKNAME: 'ABOUTTASKNAME'
+}
