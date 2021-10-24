@@ -1,89 +1,84 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/header/header';
-import Task from './components/task/task';
 import Footer from './components/footer/footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDescriptionAC, setNoteAC, setNotesAC, setTitleAC } from './redux/actions';
+import Task from './components/task/task';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      taskName: '',
-      aboutTask: '',
-      tasks: []
-    };
-  }
+const App = () => {
 
-  onChangeTaskName = (e) => {
-    let taskText = e.target.value;
-    this.setState({
-      taskName: taskText
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  console.log(state);
+
+  const getNotes = async () => {
+    const response = await fetch('http://localhost:8080/note', {
+      method: 'GET',
     })
+      .then((resp) => resp.json())
+      .catch(e => console.log('getNotes', e));
+    console.log(response);
+    // return response;
+
+    dispatch(setNotesAC(response))
   }
 
-  onChangeAboutTask = (e) => {
-    let aboutTaskText = e.target.value;
-    this.setState({
-      aboutTask: aboutTaskText
-    })
+  useEffect(() => {
+    getNotes();
+  }, [])
+
+
+  const onChangeTitle = (e) => {
+    const title = e.target.value;
+    dispatch(setTitleAC(title))
   }
 
-  id = 0;
-  
-  addTask = () => {
-    let textObject = {
-      id: this.id++,
-      taskName: this.state.taskName,
-      aboutTask: this.state.aboutTask
-    };
-
-    if (textObject.taskName.length !== 0 && textObject.aboutTask.length !== 0) {
-      this.setState({
-        tasks: [...this.state.tasks, textObject], 
-        taskName: '',
-        aboutTask: ''
-      });
-    }
+  const onChangeDescription = (e) => {
+    const description = e.target.value;
+    dispatch(setDescriptionAC(description));
   }
 
-  deleteTask = (id) => {
-    this.setState({
-      tasks: this.state.tasks.filter((task) => {
-        return task.id !== id
-      })
-    })
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: state.taskPage.title, description: state.taskPage.description })
+  };
+
+  const setNote = async () => {
+    await fetch('http://localhost:8080/note', requestOptions);
+    await getNotes();
   }
 
-  updateTask = (task) => {
-    let idx = this.state.tasks.findIndex(t => t.id === task.id);
-
-    this.setState({
-      tasks: [...this.state.tasks.slice(0, idx), task, ...this.state.tasks.slice(idx + 1, this.state.tasks.length)]
-    });
+  const addNote = () => {
+    setNote();
+    dispatch(setTitleAC(""));
+    dispatch(setDescriptionAC(""));
   }
 
-  render() {
-    return (
-      <main className='main'>
-        <div className='todo_wrapper'>
-          <Header />
-          <section className='todo_inputs_section'>
-            <div className='inputs_wrapper'>
-              <input maxLength="30" type='text' className='todo_input task_name_input' onChange={this.onChangeTaskName} value={this.state.taskName} placeholder='Write your task name' />
-              <textarea maxLength="70" type='text' className='todo_input about_task_input' onChange={this.onChangeAboutTask} value={this.state.aboutTask} placeholder='Write about your task' />
-            </div>
-            <button className='todo_button' onClick={this.addTask}><i className="fas fa-plus"></i></button>
-          </section>
-          <section>
-            {this.state.tasks.map((task, index) => {
-              return <Task task={task} key={index} onChangeTaskName={this.onChangeTaskName} deleteTask={this.deleteTask} updateTask={this.updateTask} />
-            })}
-          </section>
-          <Footer />
-        </div>
-      </main>
-    );
-  }
+  return (
+    <main className='main'>
+      <div className='todo_wrapper'>
+        <Header />
+        <section className='todo_inputs_section'>
+          <div className='inputs_wrapper'>
+            <input maxLength="30" type='text' className='todo_input task_name_input' onChange={onChangeTitle} value={state.taskPage.title} placeholder='Write title' />
+            <textarea maxLength="70" type='text' className='todo_input about_task_input' onChange={onChangeDescription} value={state.taskPage.description} placeholder='Write description' />
+          </div>
+          <button className='todo_button' onClick={addNote}><i className="fas fa-plus"></i></button>
+        </section>
+        <section>
+          {state.taskPage.notes.map((note, index) => {
+            return <Task note={note} key={index}
+            // onChangeTitle={onChangeTitle} 
+            //  deleteNote={deleteNote} updateNote={updateNote}
+            />
+          })}
+        </section>
+        <Footer />
+      </div>
+    </main>
+  );
 }
 
 export default App;

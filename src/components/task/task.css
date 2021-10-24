@@ -29,7 +29,8 @@
     background-color: transparent;
     border: none;
     outline: none;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid red;
+    color: red;
 } 
 
 .task_name:focus, .about_task:focus {

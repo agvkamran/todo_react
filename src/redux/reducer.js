@@ -1,24 +1,36 @@
 import { types } from "./action-types";
 
 const initialState = {
-    taskName: '',
-    aboutTask: '',
-    tasks: []
+    title: '',
+    description: '',
+    notes: []
 }
 
 const taskReducer = (state = initialState, action) => {
     switch (action.type) {
-        case types.SET_TASKNAME:
+        case types.SET_TITLE:
             return {
                 ...state,
-                taskName: action.payload
+                title: action.payload
             }
-        case types.SET_ABOUTTASKNAME: {
+        case types.SET_DESCRIPTION: {
             return {
                 ...state,
-                aboutTask: action.payload
+                description: action.payload
             }
         }
+        case types.SET_NOTES:
+            return {
+                ...state,
+                notes: action.payload
+            }
+        case types.DELETE_NOTE:
+            return {
+                ...state,
+                notes: [...state.notes.filter((note) => {
+                    return note.id !== action.payload
+                })]
+            }
         default: return state
     }
 }
