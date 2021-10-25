@@ -67,13 +67,13 @@ const App = () => {
           </div>
           <button className='todo_button' onClick={addNote}><i className="fas fa-plus"></i></button>
         </section>
-        <section>
-          {state.taskPage.notes.map((note, index) => {
-            return <Task note={note} key={index}
-            // onChangeTitle={onChangeTitle} 
-            //  deleteNote={deleteNote} updateNote={updateNote}
-            />
-          })}
+        <section className='section_app'>
+            {state.taskPage.notes?.map((note, index) => {
+              return <Task note={note} key={index}
+              // onChangeTitle={onChangeTitle} 
+              //  deleteNote={deleteNote} updateNote={updateNote}
+              />
+            })}
         </section>
         <Footer />
       </div>
